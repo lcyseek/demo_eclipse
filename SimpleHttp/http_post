@@ -1,0 +1,30 @@
+POST / HTTP/1.1
+Charset: UTF-8
+Cache-Control: no-cache
+Pragma: no-cache
+User-Agent: Java/1.7.0_79
+Host: www.baidu.com
+Accept: text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2
+Connection: keep-alive
+Content-type: application/x-www-form-urlencoded
+Content-Length: 23
+
+name=%E6%9F%B3%E5%B2%A9HTTP/1.1 302 Moved Temporarily
+Date: Thu, 02 Jun 2016 03:13:42 GMT
+Content-Type: text/html
+Content-Length: 215
+Connection: Keep-Alive
+Location: http://www.baidu.com/search/error.html
+Server: BWS/1.1
+X-UA-Compatible: IE=Edge,chrome=1
+BDPAGETYPE: 3
+Set-Cookie: BDSVRTM=0; path=/
+
+<html>
+<head><title>302 Found</title></head>
+<body bgcolor="white">
+<center><h1>302 Found</h1></center>
+<hr><center>pr-nginx_1-0-278_BRANCH Branch
+Time : Wed Jun  1 10:36:37 CST 2016</center>
+</body>
+</html>
