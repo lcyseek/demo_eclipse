@@ -113,7 +113,7 @@ class SyncThread extends Thread{
 		synchronized (lock) {
 			System.out.println(name+" 获取到了锁");
 			try {
-				Thread.sleep(10000);
+				Thread.sleep(10000);//sleep不会释放锁
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

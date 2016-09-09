@@ -24,9 +24,6 @@ import java.util.concurrent.locks.ReentrantLock;
  * 		d) lockInterruptibly:如果获取了锁定立即返回，如果没有获取锁定，当前线程处于休眠状态，直到获得锁定，或者当前线程被别的线程中断
  *
  *
- * synchronized是在JVM层面上实现的，不但可以通过一些监控工具监控synchronized的锁定，而且在代码执行时出现异常，
- * JVM会自动释放锁定. 但是使用Lock则不行，lock是通过代码实现的，要保证锁定一定会被释放，就必须将unLock()放到finally{}中
- *
  * 在资源竞争不是很激烈的情况下，Synchronized的性能要优于ReetrantLock，但是在资源竞争很激烈的情况下，
  * Synchronized的性能会下降几十倍，但是ReetrantLock的性能能维持常态；
  */
@@ -37,52 +34,70 @@ public class ReentrantLockDemo {
 	//而不公平锁则允许讨价还价，在这种情况下，线程有时可以比先请求锁的其他线程先得到锁。
 	//公平保证了锁是非常健壮的锁，有很大的性能成本。默认是false
 	private static ReentrantLock lock = new ReentrantLock();
-
+	
 	public static void doWork() {
-
-		boolean b = lock.tryLock();
-		System.out.println("doWork试着获取锁");
-		if (b) {
-			System.out.println("doWork获取锁");
-			try {
-				Thread.sleep(8000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} finally {
-				lock.unlock();
-			}
+		
+		lock.lock();
+		System.out.println("doWork获取到了锁");
+		try {
+			Thread.sleep(15000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}finally {
+			lock.unlock();
 		}
 
 		System.out.println("doWork 执行完毕");
 	}
 
-	public static void doLove() throws InterruptedException {
-
-		boolean b = lock.tryLock(2, TimeUnit.SECONDS);
-		// boolean b = lock.tryLock();
-		System.out.println("doLove试着获取锁");
-		if (b) {
-			System.out.println("doLove获取锁");
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} finally {
-				lock.unlock();
+	public static void doLove(int time) {
+		System.out.println("doLove开始获取锁");
+		
+		boolean b = false;
+		try {
+			if(time != 0){
+				b = lock.tryLock(time, TimeUnit.SECONDS);
+				if(!b){
+					System.out.println("doLove 没有获取到锁,结束");
+					return ;
+				}
+			}else{
+				lock.lock();
+				b = true;
 			}
-		}else{
-			System.out.println("doLove没有获取锁");
+			
+			System.out.println("doLove获取到了锁");
+			Thread.sleep(5000);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(b == true)
+				lock.unlock();
 		}
+		
 		System.out.println("doLove 执行完毕");
 	}
 
 	public static void main(String[] args) throws InterruptedException {
 //		test1();
-		test2();
+//		test2();
+		test3();
 	}
+
 
 	@SuppressWarnings("unused")
 	private static void test1() throws InterruptedException {
+		new Thread(new Runnable() {
+			public void run() {
+				doWork();
+			}
+		}).start();
+
+		Thread.sleep(200);
+		doLove(3);
+	}
+	
+	private static void test2() throws InterruptedException {
 		// TODO Auto-generated method stub
 		new Thread(new Runnable() {
 			public void run() {
@@ -91,10 +106,23 @@ public class ReentrantLockDemo {
 		}).start();
 
 		Thread.sleep(200);
-		doLove();
+		
+		Thread t = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				doLove(3);
+			}
+		});
+		t.start();
+		
+		Thread.sleep(1000);
+		System.out.println("能否打断获取锁的状态");
+		t.interrupt();//lock.lock()不能被打断，lock.tryLock()可以被打断
 	}
 
-	private static void test2() throws InterruptedException {
+
+	private static void test3() throws InterruptedException {
 		// TODO Auto-generated method stub
 		Thread t1 = new Thread(new MyRunnable("线程1"));
 		Thread t2 = new Thread(new MyRunnable("线程2"));
@@ -114,7 +142,6 @@ public class ReentrantLockDemo {
 		 * b--> lock.lockInterruptibly() t2的lockInterruptibly优先考虑响应中断,所以回退出抢锁
 		 * c--> lock.tryLock(6, TimeUnit.SECONDS) 也会响应中断
 		 */
-
 	}
 
 	static class MyRunnable implements Runnable {
@@ -130,7 +157,6 @@ public class ReentrantLockDemo {
 			try {
 				System.out.println(name + " 开始抢锁");
 				
-				//------->a
 //				lock.lock();
 				lock.lockInterruptibly();
 				
@@ -149,7 +175,7 @@ public class ReentrantLockDemo {
 				lock.unlock();
 				System.out.println(name + " 结束");
 			} catch (Exception e) {
-				System.out.println(name+" "+e.getMessage());
+				e.printStackTrace();
 			}
 		}
 

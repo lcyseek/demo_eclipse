@@ -13,9 +13,10 @@ public class SocketThread extends Thread{
 			while(true){
 				System.out.println("start recv socket");
 				socket.accept();
+			
 			}
 		} catch (Exception e) {
-			System.out.println("InterruptSocketThread interrupt:"+e.toString());
+			e.printStackTrace();
 			System.out.println("isInterrupted:"+isInterrupted());
 		}
 	}

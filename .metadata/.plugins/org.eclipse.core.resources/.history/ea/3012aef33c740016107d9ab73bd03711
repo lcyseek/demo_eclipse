@@ -1,0 +1,9 @@
+package com.seek.collection.queue;
+
+import java.util.concurrent.ArrayBlockingQueue;
+
+public class ArrayBlockingQueueDemo {
+	public static void main(String[] args) {
+		ArrayBlockingQueue<String> queue;
+	}
+}

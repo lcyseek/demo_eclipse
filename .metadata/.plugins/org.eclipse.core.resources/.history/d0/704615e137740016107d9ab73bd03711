@@ -1,0 +1,16 @@
+package com.seek.collection.queue;
+
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
+public class PriorityQueueDemo {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Comparator<Integer> comparator = new Comparator<Integer>() {
+		};
+		PriorityQueue<Integer> priorityQueue = new PriorityQueue<>(10, comparator)
+
+	}
+
+}

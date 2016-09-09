@@ -31,6 +31,7 @@ public class MyThread extends Thread{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		
 		System.out.println(df.format(new Date()) +" ("+Thread.currentThread().getName()+")"+name+"执行完毕");
 
 		super.run();

@@ -10,7 +10,7 @@ public class SimpleDemo {
 	
 	public static void main(String[] args) throws Exception {
 
-//		HttpUtil.get(url);
+		HttpUtil.get(BAIDU);
 //		HttpUtil.getImage(LIUYAN);
 //		HttpUtil.getMp3Info("心太软");
 		

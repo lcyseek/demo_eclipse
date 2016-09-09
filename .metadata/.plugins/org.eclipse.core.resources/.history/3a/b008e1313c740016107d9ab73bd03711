@@ -1,0 +1,5 @@
+package com.seek.collection.queue;
+
+public class ArrayBlockingQueueDemo {
+
+}

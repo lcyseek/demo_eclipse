@@ -1,0 +1,9 @@
+package com.seek.collection.queue;
+
+public class PriorityBlockingQueueDemo {
+
+	public static void main(String[] args) {
+
+	}
+
+}

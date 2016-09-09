@@ -51,6 +51,7 @@ public class HttpUtil {
 			throw new Exception("HTTP Request is not success, Response code is " + retCode);
 		}
 		
+		
 		//获取响应头内容
 		Map<String, List<String>> headers = connection.getHeaderFields();
 		for(String key:headers.keySet()){
@@ -74,6 +75,7 @@ public class HttpUtil {
 		System.out.println(result);
 		
 		connection.disconnect();
+		
 	}
 	
 	public static void getImage(String urlString) throws Exception {

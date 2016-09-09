@@ -1,0 +1,300 @@
+package com.seek.pool;
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * Java里面线程池的顶级接口是Executor
+ * public interface Executor {
+ * 		void execute(Runnable command);
+ * }
+ * 
+ * 
+ * public interface ExecutorService extends Executor{
+ * 		void shutdown();
+ * 		List<Runnable> shutdownNow();
+ * 		boolean isShutdown();
+ * 		boolean isTerminated();
+ * 		<T> Future<T> submit(Runnable task, T result);	
+ * 		<T> Future<T> submit(Callable<T> task);
+ * 		Future<?> submit(Runnable task);
+ * 		...
+ * }
+ * 
+ * Executors该类是一个辅助类
+ * public class Executors {
+ * 		newFixedThreadPool(int nThreads);
+ * 		newFixedThreadPool(int nThreads, ThreadFactory threadFactory);
+ * 		newSingleThreadExecutor();
+ * 		newSingleThreadExecutor(ThreadFactory threadFactory);
+ * 		newCachedThreadPool();
+ * 		newCachedThreadPool(ThreadFactory threadFactory);
+ * 		newSingleThreadScheduledExecutor();
+ * 		newSingleThreadScheduledExecutor(ThreadFactory threadFactory);
+ * 		newScheduledThreadPool(int corePoolSize);
+ * 		newScheduledThreadPool(int corePoolSize, ThreadFactory threadFactory);
+ * }
+ * 
+ */
+
+public class ThreadPoolDemo {
+
+	public static void main(String[] args) throws Exception {
+		singleThreadPool();
+//		cachedThreadPool();
+//		fixedThreadPool();
+//		scheduledThreadPool();
+//		test();
+	}
+	
+
+
+	private static void test() {
+		ExecutorService pool = Executors.newSingleThreadExecutor();
+		pool.execute(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				System.out.println("Thread name="+Thread.currentThread().getName());
+			}
+		});
+	}
+
+	
+	/**
+	 * shutdown和shutdownNow的区别
+	 * shutDown() 
+	 * 		当线程池调用该方法时,线程池的状态则立刻变成SHUTDOWN状态。此时，则不能再往线程池中添加任何任务，但是，此时线程池不会立刻退出，直到添加到线程池中的任务都已经处理完成，才会退出
+	 * shutdownNow() 
+	 * 		执行该方法，线程池的状态立刻变成STOP状态，并试图停止所有正在执行的线程，不再处理还在池队列中等待的任务，当然，它会返回那些未执行的任务。 
+	 * 		它试图终止线程的方法是通过调用Thread.interrupt()方法来实现的，但是大家知道，这种方法的作用有限，如果线程中没有sleep 、wait、Condition、定时锁等应用, interrupt()方法是无法中断当前的线程的。所以，ShutdownNow()并不代表线程池就一定立即就能退出
+	 */
+	@SuppressWarnings("unused")
+	private static void singleThreadPool() throws InterruptedException {
+		//创建一个单线程的线程池，此线程池保证所有任务的执行顺序按照任务的提交顺序执行
+		ExecutorService pool = Executors.newSingleThreadExecutor();
+		
+		MyThread t1 = new MyThread("线程1");
+		MyThread t2 = new MyThread("线程2");
+		MyThread t3 = new MyThread("线程3");
+		MyThread t4 = new MyThread("线程4");
+	
+		pool.execute(t1);
+		pool.execute(t2);
+		pool.execute(t3);
+		
+		/**
+		 * 当线程池调用该方法时,线程池的状态则立刻变成SHUTDOWN状态,以后不能再往线程池中添加任何任务，
+		 * 否则将会抛出RejectedExecutionException异常。但是，此时线程池不会立刻退出，直到添加到线程池中的任务都已经处理完成，才会退出。
+		 */
+//		pool.shutdown();
+		//抛异常RejectedExecutionException
+		pool.execute(t4);
+		
+		Thread.sleep(1000);
+		//执行后不再接受新任务，如果有等待任务，移出队列；有正在执行的，尝试停止之(它通过调用Thread.interrupt来实现线程的立即退出)
+		//返回一个正在等待执行但线程池关闭却没有被执行的Task集合
+		List<Runnable> runnables = pool.shutdownNow();
+		for(int i=0;i<runnables.size();i++){
+			MyThread runnable = (MyThread) runnables.get(i);
+			System.out.println("未完成的线程:"+runnable.getName());
+		}
+	}
+	
+	@SuppressWarnings("unused")
+	private static void cachedThreadPool() {
+		//创建一个可缓存的线程池。会回收部分空闲（60秒不执行任务）的线程
+		//当任务数增加时，先查看池中有没有以前建立的可用的空闲线程。如果没有则添加新线程来处理任务
+		//此线程池不会对线程池大小做限制，线程池大小完全依赖于操作系统
+		ExecutorService pool = Executors.newCachedThreadPool();
+		
+		MyThread t1 = new MyThread("线程1");
+		MyThread t2 = new MyThread("线程2");
+		MyThread t3 = new MyThread("线程3");
+		MyThread t4 = new MyThread("线程4");
+		MyThread t5 = new MyThread("线程5");
+		
+		pool.execute(t1);
+		pool.execute(t1);
+		pool.execute(t2);
+		pool.execute(t3);
+		pool.execute(t4);
+		pool.execute(t5);
+		
+		//60s后，线程将结束程序退出!!!
+	}
+	
+	@SuppressWarnings("unused")
+	private static void fixedThreadPool() {
+		//如果编写的是小程序，或者是轻载的服务器，使用Excutors.newCashedThreadpool通常是个不错的选择，
+		//因为它不需要配置，并且一般情况下都能够正确地完成工作。但是对于大负载的服务器来说，
+		//缓存的线程池就不是很好的选择了！在缓存的线程池中，被提交的任务没有排成队列。
+		//而是直接交给线程执行。如果没有线程可用，就创建一个新的线程。如果服务器负载的太重，以致他所有的CPU都完全被占用了，
+		//当有更多的任务时，就会创建更多的线程，这样只会使情况变得更糟。因此在大负载的产品服务器中，
+		//最好使用Excutors.newFixedThreadPool，它为你提供了一个包含固定线程数目的线程池，
+		//或者为了最大的限度地控制它，就直接使用ThreadPoolExcutor类。
+		
+		ExecutorService pool = Executors.newFixedThreadPool(3);
+		
+		//创建固定大小的线程池，可控制线程最大并发数，超出的线程会在队列中等待。
+		MyThread t1 = new MyThread("线程1");
+		MyThread t2 = new MyThread("线程2");
+		MyThread t3 = new MyThread("线程3");
+		MyThread t4 = new MyThread("线程4");
+		MyThread t5 = new MyThread("线程5");
+		
+		pool.execute(t1);
+		pool.execute(t2);
+		pool.execute(t3);
+		pool.execute(t4);
+		pool.execute(t5);
+		pool.execute(t1);
+
+		//如果不手动关闭，线程池不会退出!!!!
+	}
+	
+	@SuppressWarnings("unused")
+	private static void scheduledThreadPool() throws InterruptedException, ParseException {
+		//用下面的这个来接收，只能使用一般线程池的方法
+//		ExecutorService pool = Executors.newScheduledThreadPool(3);
+		
+		//用这个接收可以使用一些周期的方法.如果不手动关闭，则不会退出
+		ScheduledExecutorService pool = Executors.newScheduledThreadPool(3);
+		
+		MyThread t1 = new MyThread("线程1",2000);
+		MyThread t2 = new MyThread("线程2",2000);
+		MyThread t3 = new MyThread("线程3",2000);
+		MyThread t4 = new MyThread("线程4",2000);
+		MyThread t5 = new MyThread("线程5",2000);
+		
+//		pool.execute(t1);
+//		pool.execute(t2);
+//		pool.execute(t3);
+//		pool.execute(t4);
+//		pool.execute(t5);
+		
+//		pool.schedule(t1, 2000, TimeUnit.MILLISECONDS);
+//		pool.schedule(t2, 4000, TimeUnit.MILLISECONDS);
+		
+		//延迟2秒后，每隔3秒执行一次。并且保证在上次运行完后才会执行下一次。
+		//即无论某个任务执行多长时间，等执行完了，我再延迟指定的时间
+//		pool.scheduleWithFixedDelay(t3, 2, 3, TimeUnit.SECONDS);
+		
+		//已固定的频率来执行某项计划  它不受计划执行时间的影响。到时间，它就执行。
+//		pool.scheduleAtFixedRate(t4, 2, 3, TimeUnit.SECONDS);
+		
+		//每天凌晨1点执行一次 
+	    long oneDay = 24 * 60 * 60 * 1000;//时间间隔(一天) 
+	    Calendar calendar = Calendar.getInstance();  
+        calendar.set(Calendar.HOUR_OF_DAY, 22); //凌晨1点  
+        calendar.set(Calendar.MINUTE, 49);  
+        calendar.set(Calendar.SECOND, 0);  
+        Date date=calendar.getTime(); //第一次执行定时任务的时间 
+        
+       //如果第一次执行定时任务的时间 小于当前的时间  
+       //此时要在 第一次执行定时任务的时间加一天，以便此任务在下个时间点执行。如果不加一天，任务会立即执行。  
+        if (date.before(new Date())) {  
+        	System.out.println("小于当前时间了");
+            date = addDay(date, 1);
+        }  
+        
+        pool.scheduleAtFixedRate(t1, date.getTime() - System.currentTimeMillis(), oneDay,TimeUnit.MILLISECONDS);
+	}
+	
+	@SuppressWarnings("unused")
+	private static void test8() throws InterruptedException, ExecutionException {
+		ExecutorService pool = Executors.newCachedThreadPool();
+		
+		//当任务完成后，可以通过Future.get()获取提交时传递的参数T result
+		Future<String> future = pool.submit(new Runnable() {
+			
+			@Override
+			public void run() {
+				
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		}, "result");
+		
+		System.out.println(future.get());
+	}
+	
+	@SuppressWarnings("unused")
+	private static void test7() throws InterruptedException, ExecutionException {
+		ExecutorService pool = Executors.newCachedThreadPool();
+		Future<?> future = pool.submit(new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(6000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return ;
+				}
+				System.out.println("--->");
+			}
+		});
+		
+		//future.get();//拿不到结果的.但是这个future可以用来取消任务等操作
+		Thread.sleep(300);
+		future.cancel(true);
+		System.out.println("===");
+	}
+	
+	@SuppressWarnings("unused")
+	private static void test6() throws InterruptedException, ExecutionException {
+		ExecutorService pool = Executors.newSingleThreadExecutor();
+		Future<String> future = pool.submit(new Callable<String>() {
+
+			@Override
+			public String call() throws Exception {
+				Thread.sleep(1000);
+				return "this is result";
+			}
+		});
+		
+		String s = future.get();
+		System.out.println(s);
+	}
+	
+	@SuppressWarnings("unused")
+	private static void test5() throws InterruptedException, ExecutionException {
+		ScheduledExecutorService pool = Executors.newScheduledThreadPool(2);
+		ScheduledFuture<String> future = pool.schedule(new Callable<String>() {
+			
+			@Override
+			public String call() throws Exception {
+				Thread.sleep(2000);
+				return "Android";
+			}
+		}, 1, TimeUnit.SECONDS);
+		
+		String result = future.get();
+		System.out.println(result);
+	}
+	
+    // 增加或减少天数  
+    public static Date addDay(Date date, int num) {  
+        Calendar startDT = Calendar.getInstance();  
+        startDT.setTime(date);  
+        startDT.add(Calendar.DAY_OF_MONTH, num);  
+        return startDT.getTime();  
+    }  
+}

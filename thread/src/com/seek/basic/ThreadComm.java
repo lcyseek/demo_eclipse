@@ -29,9 +29,14 @@ public class ThreadComm {
 		Thread thread = new Thread(runnable);
 //		thread.setDaemon(true);
 		thread.start();
-
+		
 		Thread thread2 = new Thread(runnable);
 		thread2.start();
+		
+//		public static final int MAX_PRIORITY 10 
+//		public static final int MIN_PRIORITY 1 
+//		public static final int NORM_PRIORITY 5 
+		System.out.println("priority="+thread.getPriority());//5
 	}
 
 

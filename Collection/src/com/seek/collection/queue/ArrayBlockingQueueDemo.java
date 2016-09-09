@@ -1,46 +1,44 @@
 package com.seek.collection.queue;
 
+import java.util.Iterator;
+import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
-/**
- * 是一个由数组支持的有界阻塞队列
- * 试图向已满队列中放入元素会导致报错；试图从空队列中提取元素将导致类似阻塞
- *
- */
 public class ArrayBlockingQueueDemo {
-
 	public static void main(String[] args) throws InterruptedException {
+		//此类的构造方法接受一个可选的公平 参数。当设置为 true 时，在多个线程的争用下，这些锁倾向于将访问权授予等待时间最长的线程。否则此锁将无法保证任何特定访问顺序
+		ArrayBlockingQueue<String> queue = new ArrayBlockingQueue<>(10,true);
 		
-		//初始化容量
-		ArrayBlockingQueue<String> queue = new ArrayBlockingQueue<>(7);
 		
-		String s0 = queue.poll();//移除并返回队列头部的元素    如果队列为空，则返回null
-		System.out.println("s0="+s0);
+	    //System.out.println("-----队列空 take 阻塞!-----");
+	    //queue.take();//队列空，造成阻塞！
 		
-//		queue.poll(3, TimeUnit.SECONDS);//如果队列里没有元素，则等待时间
-
+		for(int i=0;i<10;i++){
+			queue.add(String.valueOf(i));
+		}
 		
-//		String s1 = queue.take();//移除并返回队列头部的元素     如果队列为空，则阻塞
-//		System.out.println("s1="+s1);
+		traverse(queue);
 		
-		initData(queue);
-
-		System.out.println("队列里还可以添加多少个元素:"+queue.remainingCapacity());
-
-//		queue.add("h");//这句话会报错。队列满
-		
-
-		
+		//超过元素大小限制，添加失败
+//		queue.add("11");
+	
+		//只有用put 和 take两个方法才会有可能阻塞！
+		System.out.println("-----队列满 put 阻塞!-----");
+		queue.put("12344");
 	}
+	
+	private static void traverse(Queue<String> deque) {
+		Iterator<String> iterator = deque.iterator();
 
-	private static void initData(ArrayBlockingQueue<String> queue) {
-		queue.add("a");
-		queue.add("b");
-		queue.add("c");
-		queue.add("d");
-		queue.add("e");
-		queue.add("f");
-		queue.add("g");
+		String s = "[";
+		while (iterator.hasNext()) {
+			String string = (String) iterator.next();
+			if (iterator.hasNext())
+				s += string + ",";
+			else
+				s += string;
+		}
+		s += "]";
+		System.out.println(s);
 	}
-
 }

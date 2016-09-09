@@ -50,14 +50,21 @@ public class ThreadPoolDemo {
 
 	public static void main(String[] args) throws Exception {
 //		singleThreadPool();
-//		cachedThreadPool();
+		cachedThreadPool();
 //		fixedThreadPool();
-		scheduledThreadPool();
+//		scheduledThreadPool();
 	}
 	
 
-
-
+	
+	/**
+	 * shutdown和shutdownNow的区别
+	 * shutDown() 
+	 * 		当线程池调用该方法时,线程池的状态则立刻变成SHUTDOWN状态。此时，则不能再往线程池中添加任何任务，但是，此时线程池不会立刻退出，直到添加到线程池中的任务都已经处理完成，才会退出
+	 * shutdownNow() 
+	 * 		执行该方法，线程池的状态立刻变成STOP状态，并试图停止所有正在执行的线程，不再处理还在池队列中等待的任务，当然，它会返回那些未执行的任务。 
+	 * 		它试图终止线程的方法是通过调用Thread.interrupt()方法来实现的，但是大家知道，这种方法的作用有限，如果线程中没有sleep 、wait、Condition、定时锁等应用, interrupt()方法是无法中断当前的线程的。所以，ShutdownNow()并不代表线程池就一定立即就能退出
+	 */
 	@SuppressWarnings("unused")
 	private static void singleThreadPool() throws InterruptedException {
 		//创建一个单线程的线程池，此线程池保证所有任务的执行顺序按照任务的提交顺序执行
@@ -76,9 +83,8 @@ public class ThreadPoolDemo {
 		 * 当线程池调用该方法时,线程池的状态则立刻变成SHUTDOWN状态,以后不能再往线程池中添加任何任务，
 		 * 否则将会抛出RejectedExecutionException异常。但是，此时线程池不会立刻退出，直到添加到线程池中的任务都已经处理完成，才会退出。
 		 */
-		pool.shutdown();
+//		pool.shutdown();
 		//抛异常RejectedExecutionException
-		pool.execute(t4);
 		
 		Thread.sleep(1000);
 		//执行后不再接受新任务，如果有等待任务，移出队列；有正在执行的，尝试停止之(它通过调用Thread.interrupt来实现线程的立即退出)
@@ -88,6 +94,9 @@ public class ThreadPoolDemo {
 			MyThread runnable = (MyThread) runnables.get(i);
 			System.out.println("未完成的线程:"+runnable.getName());
 		}
+		
+//		pool.execute(t4);
+
 	}
 	
 	@SuppressWarnings("unused")
@@ -179,7 +188,7 @@ public class ThreadPoolDemo {
         calendar.set(Calendar.MINUTE, 49);  
         calendar.set(Calendar.SECOND, 0);  
         Date date=calendar.getTime(); //第一次执行定时任务的时间 
-        
+       
        //如果第一次执行定时任务的时间 小于当前的时间  
        //此时要在 第一次执行定时任务的时间加一天，以便此任务在下个时间点执行。如果不加一天，任务会立即执行。  
         if (date.before(new Date())) {  
@@ -189,85 +198,8 @@ public class ThreadPoolDemo {
         
         pool.scheduleAtFixedRate(t1, date.getTime() - System.currentTimeMillis(), oneDay,TimeUnit.MILLISECONDS);
 	}
-	
-	@SuppressWarnings("unused")
-	private static void test8() throws InterruptedException, ExecutionException {
-		ExecutorService pool = Executors.newCachedThreadPool();
-		
-		//当任务完成后，可以通过Future.get()获取提交时传递的参数T result
-		Future<String> future = pool.submit(new Runnable() {
-			
-			@Override
-			public void run() {
-				
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-			}
-		}, "result");
-		
-		System.out.println(future.get());
-	}
-	
-	@SuppressWarnings("unused")
-	private static void test7() throws InterruptedException, ExecutionException {
-		ExecutorService pool = Executors.newCachedThreadPool();
-		Future<?> future = pool.submit(new Runnable() {
-			
-			@Override
-			public void run() {
-				try {
-					Thread.sleep(6000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					return ;
-				}
-				System.out.println("--->");
-			}
-		});
-		
-		//future.get();//拿不到结果的.但是这个future可以用来取消任务等操作
-		Thread.sleep(300);
-		future.cancel(true);
-		System.out.println("===");
-	}
-	
-	@SuppressWarnings("unused")
-	private static void test6() throws InterruptedException, ExecutionException {
-		ExecutorService pool = Executors.newSingleThreadExecutor();
-		Future<String> future = pool.submit(new Callable<String>() {
 
-			@Override
-			public String call() throws Exception {
-				Thread.sleep(1000);
-				return "this is result";
-			}
-		});
-		
-		String s = future.get();
-		System.out.println(s);
-	}
-	
-	@SuppressWarnings("unused")
-	private static void test5() throws InterruptedException, ExecutionException {
-		ScheduledExecutorService pool = Executors.newScheduledThreadPool(2);
-		ScheduledFuture<String> future = pool.schedule(new Callable<String>() {
-			
-			@Override
-			public String call() throws Exception {
-				Thread.sleep(2000);
-				return "Android";
-			}
-		}, 1, TimeUnit.SECONDS);
-		
-		String result = future.get();
-		System.out.println(result);
-	}
+
 	
     // 增加或减少天数  
     public static Date addDay(Date date, int num) {  

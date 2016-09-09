@@ -1,0 +1,99 @@
+package com.seek.collection.queue;
+
+import java.util.HashMap;
+import java.util.concurrent.DelayQueue;
+import java.util.concurrent.Delayed;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * 考试时间为120分钟，30分钟后才可交卷，初始化考生完成试卷时间最小应为30分钟 对于能够在120分钟内交卷的考生，如何实现这些考生交卷
+ * 对于120分钟内没有完成考试的考生，在120分钟考试时间到后需要让他们强制交卷 在所有的考生都交完卷后，需要将控制线程关闭
+ *
+ */
+public class DelayQueueDemo {
+
+	public static void main(String[] args) {
+		// DelayQueue<Delayed>
+		// CountDownLatch
+
+	}
+	
+	class Cache<K,V>{
+		public HashMap<K, V>map = new HashMap<>();
+		public DelayQueue<DelayedItem<K>> queue = new DelayQueue<>();
+		
+		public void put(K k,V v,long liveTime){
+			V v2 = map.put(k, v);
+			DelayedItem<K> delayedItem = new DelayedItem<K>(k, liveTime);
+			
+			if(v2 != null){
+				//为什么可以移除？因为DelayedItem实现了 hashCode和Equals方法,可以根据key判断是否相同
+				queue.remove(delayedItem);
+			}
+			queue.put(delayedItem);
+		}
+	}
+
+	class DelayedItem<T> implements Delayed {
+		private T t;
+		private long liveTime;
+		private long removeTime;
+
+		public DelayedItem(T t, long liveTime) {
+			super();
+			this.t = t;
+			this.liveTime = liveTime;
+			this.removeTime = liveTime + System.currentTimeMillis();
+		}
+
+		@Override
+		public int compareTo(Delayed o) {
+			// TODO Auto-generated method stub
+
+			if (o == null)
+				return 1;
+			if (o == this)
+				return 0;
+
+			@SuppressWarnings("unchecked")
+			DelayedItem<T> delayedItem = (DelayedItem<T>) o;
+			if (liveTime > delayedItem.liveTime)
+				return 1;
+			else if (liveTime == delayedItem.liveTime)
+				return 0;
+			else
+				return -1;
+		}
+
+		@Override
+		public long getDelay(TimeUnit unit) {
+			// TODO Auto-generated method stub
+			return unit.convert(removeTime - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
+		}
+
+		public T getT() {
+			return t;
+		}
+
+		public void setT(T t) {
+			this.t = t;
+		}
+		
+		@Override
+		public int hashCode() {
+			// TODO Auto-generated method stub
+			return t.hashCode();
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			// TODO Auto-generated method stub
+			if(obj instanceof DelayedItem){
+				return obj.hashCode() == hashCode()?true:false;
+			}
+			
+			return false;
+		}
+
+	}
+}

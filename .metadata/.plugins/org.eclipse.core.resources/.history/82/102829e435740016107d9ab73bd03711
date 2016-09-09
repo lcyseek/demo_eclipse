@@ -1,0 +1,39 @@
+package com.seek.collection.queue;
+
+import java.util.concurrent.ArrayBlockingQueue;
+
+/**
+ * 
+ * Queue{
+ * 
+ * 		boolean add(E e); 	增加一个元索 如果队列已满，则抛出一个IIIegaISlabEepeplian异常
+ * 		boolean offer(E e);	添加一个元素并返回true       	如果队列已满，则返回false
+ * 
+ * 		E remove();			移除并返回队列头部的元素    	如果队列为空，则抛出一个NoSuchElementException异常
+ * 		E poll();	  		移除并返回队列头部的元素		如果此deque队列为空，则返回null
+ * 。
+ * 		E element();		返回队列头部的元素             如果队列为空，则抛出一个NoSuchElementException异常
+ * 		E peek();			返回队列头部的元素             如果队列为空，则返回null
+ * 
+ * }
+ * 
+ * Queue
+ * 		1.PriorityQueue
+ * 				PriorityQueue并不是一个比较标准的队列实现，PriorityQueue保存队列元素的顺序并不是按照加入队列的顺序，而是按照队列元素的大小进行重新排序，这点从它的类名也可以看出来
+ * 		2.Deque
+ *				Deque接口代表一个"双端队列"，双端队列可以同时从两端来添加、删除元素，因此Deque的实现类既可以当成队列使用、也可以当成栈使用
+ * 				子类：
+ * 					ArrayDeque
+ * 					LinkedList
+ * 		3.BlockingQueue
+ * 				可以是限定容量的。它在任意给定时间都可以有一个remainingCapacity，超出此容量，便无法无阻塞地put 附加元素。没有任何内部容量约束的BlockingQueue 总是报告Integer.MAX_VALUE 的剩余容量
+ * 				子类:
+ * 					ArrayBlockingQueue
+ * 
+ */
+
+
+
+public class Entry {
+	ArrayBlockingQueue<E>
+}

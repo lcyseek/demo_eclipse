@@ -1,0 +1,15 @@
+package com.seek.collection.queue;
+
+import java.util.concurrent.TimeUnit;
+
+public class TimeUtilDemo {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		TimeUnit timeUnil = TimeUnit.DAYS;
+		
+		System.out.println(timeUnil.name());
+		System.out.println(timeUnil.toDays(1));
+	}
+
+}

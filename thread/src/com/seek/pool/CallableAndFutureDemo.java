@@ -1,11 +1,13 @@
 package com.seek.pool;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -35,13 +37,62 @@ import java.util.concurrent.TimeUnit;
 public class CallableAndFutureDemo {
 
 	public static void main(String[] args) throws Exception {
+//		test1();
+//		test2();
+		test3();
 //		useCallableOne();
 //		useCallableTwo();
 		
 //		futureMethod();
-		futureMethod1();
+//		futureMethod1();
 	}
 
+
+	private static void test1() throws InterruptedException, ExecutionException {
+		// TODO Auto-generated method stub
+		ScheduledExecutorService pool = Executors.newScheduledThreadPool(2);
+		
+		//一秒后执行
+		Future future = pool.submit(new Runnable() {
+			public void run() {
+				System.out.println("start");
+				try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				System.out.println("end.");
+			}
+		});
+		//如果是Runnable对象，那么拿不到结果！
+		System.out.println("runnable is done:"+future.isDone());
+		Thread.sleep(500);
+		System.out.println("runnable is done:"+future.isDone());
+		Thread.sleep(500);
+		System.out.println("runnable is done:"+future.isDone());
+		Thread.sleep(500);
+		System.out.println("runnable is done:"+future.isDone());
+		Thread.sleep(500);
+		System.out.println("runnable is done:"+future.isDone());
+		Thread.sleep(500);
+		System.out.println("runnable is done:"+future.isDone());
+		Thread.sleep(500);
+		System.out.println("runnable is done:"+future.isDone());
+		Thread.sleep(500);
+		System.out.println("runnable is done:"+future.isDone());
+	}
+
+
+	//Callable + Future
+	private static void test2() throws InterruptedException, ExecutionException {
+		ExecutorService pool = Executors.newSingleThreadExecutor();
+		Future<String> future = pool.submit(new MyCallable());
+		System.out.println("结果:"+future.get());
+		//future.get(5, TimeUnit.SECONDS);尝试获取5秒
+		pool.shutdown();
+	}
+	
 	private static void futureMethod1() throws InterruptedException  {
 		MyCallable callable = new MyCallable();
 		ExecutorService pool = Executors.newSingleThreadExecutor();
@@ -55,9 +106,27 @@ public class CallableAndFutureDemo {
 
 		System.out.println("是否取消任务成功:"+ok);
 	}
+	
+	//Callable + FutureTask
+	@SuppressWarnings("unused")
+	private static void test3() throws Exception{
+		ScheduledExecutorService pool = Executors.newScheduledThreadPool(1);
+		MyCallable callable = new MyCallable();
+		FutureTask<String> futureTask = new FutureTask<>(callable);
+		pool.submit(futureTask);
+		pool.shutdown();
+		
+		//也可以直接这样
+		//new Thread(futureTask).start();
+		
+		//一秒钟获取结果，拿不到则抛出TimeoutException
+		System.out.println("执行结果:"+futureTask.get());
+		
+		//如果为了可取消性而使用 Future 但又不提供可用的结果，则可以声明 Future<?> 形式类型、并返回 null 作为底层任务的结果。
+	}
 
 	@SuppressWarnings("unused")
-	private static void futureMethod() throws Exception{
+	private static void test4() throws Exception{
 		MyCallable callable = new MyCallable();
 		ExecutorService pool = Executors.newSingleThreadExecutor();
 		Future<String> future = pool.submit(callable);
@@ -73,35 +142,6 @@ public class CallableAndFutureDemo {
 			Thread.sleep(1000);
 		}
 	}
-
-	//Callable + FutureTask
-	@SuppressWarnings("unused")
-	private static void useCallableTwo() throws Exception{
-		ScheduledExecutorService pool = Executors.newScheduledThreadPool(1);
-		MyCallable callable = new MyCallable();
-		FutureTask<String> futureTask = new FutureTask<>(callable);
-		pool.submit(futureTask);
-		pool.shutdown();
-		
-		//也可以直接这样
-		//new Thread(futureTask).start();
-		
-		//一秒钟获取结果，拿不到则抛出TimeoutException
-		System.out.println("执行结果:"+futureTask.get(1, TimeUnit.SECONDS));
-		
-		//如果为了可取消性而使用 Future 但又不提供可用的结果，则可以声明 Future<?> 形式类型、并返回 null 作为底层任务的结果。
-	}
-
-	//Callable + Future
-	@SuppressWarnings("unused")
-	private static void useCallableOne() throws Exception {
-		ScheduledExecutorService pool = Executors.newScheduledThreadPool(1);
-		MyCallable callable = new MyCallable();
-		Future<String> future = pool.submit(callable);
-		// 阻塞当前线程
-		System.out.println("执行结果:"+future.get());
-	}
-
 }
 
 class MyCallable implements Callable<String>{
@@ -113,7 +153,7 @@ class MyCallable implements Callable<String>{
 			Thread.sleep(4000);
 			System.out.println(Thread.currentThread().getName()+" 结束执行");
 		} catch (Exception e) {
-			System.out.println("MyCallable:"+e.getMessage());
+			e.printStackTrace();
 		}
 
 		return "This is Callable return.";

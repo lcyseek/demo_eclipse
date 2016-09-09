@@ -1,40 +1,63 @@
 package com.seek.sync;
 
+/**
+ * 
+ * 当线程处于阻塞synchronized抢锁时，是不能被interrupt的。但是标记为可以被设置
+ *
+ */
 public class Test3 {
 
 	private static Object lock = new Object();
 	
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) {
 
-		MyThread thread = new MyThread();
-		thread.start();
+		AThread aThread = new AThread();
+		aThread.start();
 		
-		Thread.sleep(3000);
-		synchronized (lock) {
-			lock.notify();
+		try {
+			Thread.sleep(1000);
+			BThread bThread = new BThread();
+			bThread.start();
+			
+			Thread.sleep(1000);
+			System.out.println("interrupt BThread");
+			bThread.interrupt();//interrupt不能打断BThread的获取锁的阻塞
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
-		
 	}
-	
-	static class MyThread extends Thread{
-		int x = 11;
+
+	static class AThread extends Thread{
 		@Override
 		public void run() {
 			synchronized (lock) {
-				
 				try {
-					if(x < 100){
-						System.out.println("x<100 wait");
-						lock.wait();
-						System.out.println("after wait.");
-					}else{
-						System.out.println("else.......");
-					}
-				} catch (Exception e) {
-				}
+					System.out.println("AThread start");
+					Thread.sleep(10000);
+					System.out.println("AThread end");
 
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
-
+	
+	static class BThread extends Thread{
+		@Override
+		public void run() {
+			System.out.println("BThread locking.....");
+			synchronized (lock) {
+				System.out.println("BThread locked");
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			System.out.println("BThread end");
+		}
+	}
 }
+
