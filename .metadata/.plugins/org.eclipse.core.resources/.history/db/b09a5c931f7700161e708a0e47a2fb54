@@ -1,0 +1,112 @@
+package com.seek.collection.list;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+
+public class ArrayListAndLinkedListDemo {
+	private static ArrayList<Integer> arrayList = new ArrayList<>();
+	private static LinkedList<Integer> linkedList = new LinkedList<>();
+	private static int[] randomIndex = new int[200];
+	private static int NUM = 8360000;
+	
+	public static void main(String[] args) {
+		init();
+		
+		//尾部顺序添加数据 一般来说是ArrayList效率比较高。
+		//但是这个结果很大不确定性！！！！，数组每次达到容量时，都会非配原来容量的一半。接下来的插入到尾部就很快了
+		//链表每次都需要新分配一个节点的内存来存储元素。添加到尾部并不需要从头遍历链表，因为它内部已经保存了尾部元素的引用。直接添加到尾部就可以了
+		//不同的数据量，会有不同的执行结果,NUM = 15160000时，array_tail_add 耗时:15068 list_tail_add 耗时:11874
+		//							   NUM = 1160000时，array_tail_add 耗时:186 list_tail_add 耗时:554
+		
+		array_tail_add();
+		list_tail_add();
+		
+		//读取ArrayList块。LinkedList要查找index所在的位置，注意它的查找优化了一下，判断index和 size/2的大小，决定从头查找还是从尾部查找
+//		array_get();
+//		list_get();
+		
+		//随即删除还是ArrayList快
+		/**
+		 * 删除尾部时，array和link差不多，都很快，是因为array不用移动元素，link可以直接定位到尾部，然后删除。
+		 * 删除中部时，array比较慢，link非常慢，array每次删除需要移动一半的元素，link定位耗时相当大（每次都要重新定位到中部），由此可见，数据量较大时，定位的开销比移动元素的开销大的多。
+		 * 删除首部时，array较慢，link很快，array每次删除都要移动所有的元素，而link可以直接定位到首部，直接删除。
+		 */
+		array_delete();
+		list_delete();
+	}
+
+	private static void init() {
+		for(int i=0;i<randomIndex.length;i++){
+			randomIndex[i] = (int)(Math.random()*(NUM));
+		}
+	}
+
+	private static void list_delete() {
+		// TODO Auto-generated method stub
+		long start = System.currentTimeMillis();
+		for(int i=0;i<200;i++){
+			linkedList.remove(1);
+		}
+		long end = System.currentTimeMillis();
+
+		System.out.println("list_delete 耗时:"+(end - start));
+	}
+
+	private static void array_delete() {
+		// TODO Auto-generated method stub
+		long start = System.currentTimeMillis();
+		for(int i=0;i<randomIndex.length;i++){
+			arrayList.remove(randomIndex[i]);
+		}
+		long end = System.currentTimeMillis();
+
+		System.out.println("array_delete 耗时:"+(end - start));
+	}
+
+	private static void list_get() {
+		long start = System.currentTimeMillis();
+		
+		for(int i=0;i<randomIndex.length;i++){
+			arrayList.remove(randomIndex[i]);
+		}
+		long end = System.currentTimeMillis();
+		System.out.println("list_get 耗时:"+(end - start));
+
+	}
+
+	private static void array_get() {
+		long start = System.currentTimeMillis();
+		for(int i=0;i<randomIndex.length;i++){
+			arrayList.get(randomIndex[i]);
+		}
+		long end = System.currentTimeMillis();
+		System.out.println("array_get 耗时:"+(end - start));
+	}
+
+	private static void list_tail_add() {
+		long start = System.currentTimeMillis();
+		//每次都是末尾添加数据
+		for(int i=0;i<NUM;i++){
+			linkedList.add(i);
+		}
+		long end = System.currentTimeMillis();
+		System.out.println("list_tail_add 耗时:"+(end - start));
+	}
+
+	private static void array_tail_add() {
+		long start = System.currentTimeMillis();
+		
+		//每次都是末尾添加数据
+		for(int i=0;i<NUM;i++){
+			arrayList.add(i);
+		}
+
+		long end = System.currentTimeMillis();
+		System.out.println("array_tail_add 耗时:"+(end - start));
+	}
+	
+	public static int getRandow(){
+		return (int)(Math.random()*(NUM));
+	}
+
+}

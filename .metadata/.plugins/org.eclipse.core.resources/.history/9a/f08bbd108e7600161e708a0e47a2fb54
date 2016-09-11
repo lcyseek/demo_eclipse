@@ -1,0 +1,14 @@
+package com.seek.collection.list;
+
+public class ArrayListAndLinkedListDemo {
+
+	public static void main(String[] args) {
+
+		test1();
+	}
+
+	private static void test1() {
+		
+	}
+
+}

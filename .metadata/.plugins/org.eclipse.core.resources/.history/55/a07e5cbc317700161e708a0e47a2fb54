@@ -1,0 +1,11 @@
+package com.seek.util;
+
+import java.util.Collections;
+
+public class Demo {
+
+	public static void main(String[] args) {
+		Collections.synchronizedList(list)
+	}
+
+}

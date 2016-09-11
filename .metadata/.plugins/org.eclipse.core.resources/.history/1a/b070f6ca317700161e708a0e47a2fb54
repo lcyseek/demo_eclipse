@@ -1,0 +1,15 @@
+package com.seek.util;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class Demo {
+
+	private ArrayList<String> arrayList;
+	
+	public static void main(String[] args) {
+		
+		Collections.synchronizedList(list)
+	}
+
+}

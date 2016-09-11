@@ -1,0 +1,40 @@
+package com.seek.collection.list;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+
+public class ArrayListAndLinkedListDemo {
+
+	public static void main(String[] args) {
+
+		array_tail_add();
+		list_tail_add();
+	}
+
+	private static void list_tail_add() {
+		LinkedList<Integer> linkedList = new LinkedList<>();
+		long start = System.currentTimeMillis();
+		//每次都是末尾添加数据
+		for(int i=0;i<1000000;i++){
+			linkedList.add(i);
+		}
+		long end = System.currentTimeMillis();
+		
+		System.out.println("耗时:"+(end - start));
+	}
+
+	private static void array_tail_add() {
+		ArrayList<Integer> arrayList = new ArrayList<>();
+		
+		long start = System.currentTimeMillis();
+		
+		//每次都是末尾添加数据
+		for(int i=0;i<1000000;i++){
+			arrayList.add(i);
+		}
+		long end = System.currentTimeMillis();
+		
+		System.out.println("耗时:"+(end - start));
+	}
+
+}

@@ -1,0 +1,117 @@
+package com.seek.util;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
+public class Demo {
+
+	private static ArrayList<String> arrayList = new ArrayList<>();
+	private static ArrayList<Student> students = new ArrayList<>();
+	private static String [] cities = {"深圳","广州","南京","北京","上海","武汉","长春","哈尔滨","杭州","厦门"};
+	
+	
+	public static void main(String[] args) {
+		init();
+		
+		//同步集合
+		List<String> list = Collections.synchronizedList(arrayList);
+		System.out.println(list.getClass().getName());
+		for(int i=0;i<10;i++){
+			list.add(""+i);
+		}
+		
+//		test1();
+//		test2();
+//		test3();
+//		test4();
+		test5();
+	}
+
+	private static void init() {
+		for(int i=0;i<10;i++){
+			
+		}
+	}
+
+	private static void test5() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	//替换所有的元素（Fill）
+	private static void test4() {
+		// TODO Auto-generated method stub
+		Collections.fill(arrayList, "fill");
+		showData(arrayList);
+	}
+
+	private static void test3() {
+		// TODO Auto-generated method stub
+		for(int i=0;i<20;i++){
+			Student student = new Student(new Random().nextInt(200), "name-->"+i);
+			students.add(student);
+		}
+		showData(students);
+	
+		//按原顺序的反向顺序
+		Collections.reverse(students);
+		showData(students);
+	}
+
+	private static void test1() {
+		String[] copy = new String[20];
+		System.arraycopy(cities, 3, copy, 2, 5);
+		
+		//null null 北京 上海 武汉 长春 哈尔滨 null null null null null null null null null null null null null 
+		for(int i=0;i<copy.length;i++){
+			System.out.print(copy[i]+" ");
+		}
+		
+		System.out.println("");
+	}
+	
+	private static void test2() {
+		for(int i=0;i<10;i++){
+			Student student = new Student(i, "name-->"+i);
+			students.add(student);
+		}
+		
+		//列表中的所有元素都必须实现 Comparable 接口
+		Collections.sort(students);
+		showData(students);
+		
+	}
+	
+	static void showData(ArrayList list){
+		for(int i=0;i<list.size();i++){
+			System.out.print(list.get(i)+" ");
+		}
+		
+		System.out.println();
+	}
+	
+	static class Student implements Comparable<Student>{
+		int id;
+		String name;
+		@Override
+		public String toString() {
+			return "Student [id=" + id + ", name=" + name + "]";
+		}
+		public Student(int id, String name) {
+			super();
+			this.id = id;
+			this.name = name;
+		}
+		@Override
+		public int compareTo(Student o) {
+			// TODO Auto-generated method stub
+			return o.id - id;
+		}
+		
+		
+	}
+
+}

@@ -1,0 +1,9 @@
+package com.seek.collection.list;
+
+public class ArrayListAndLinkedListDemo {
+
+	public static void main(String[] args) {
+
+	}
+
+}
