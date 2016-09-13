@@ -6,20 +6,20 @@
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="Queue" key="selection"/>
+		<item value="rehashing" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="queue"/>
-			<item value="shutdown"/>
-			<item value="start"/>
-			<item value="execute"/>
-			<item value="thread"/>
-			<item value="threadFactory"/>
-			<item value="ThreadPoolExecutor"/>
-			<item value="execute`"/>
+			<item value="rehashing"/>
+			<item value="table"/>
+			<item value="put"/>
+			<item value="Entry[]"/>
+			<item value="len"/>
+			<item value="size"/>
+			<item value="DEFAULTCAPACITY_EMPTY_ELEMENTDATA"/>
+			<item value="DEFAULT_CAPACITY"/>
 		</list>
 		<list key="replacehistory">
 		</list>

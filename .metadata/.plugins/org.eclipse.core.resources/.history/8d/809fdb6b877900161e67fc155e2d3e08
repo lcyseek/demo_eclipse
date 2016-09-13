@@ -1,0 +1,40 @@
+package com.seek.map;
+
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Set;
+
+/**
+ * 有序!!!!
+ * @author lcy
+ *
+ */
+public class LinkedHashMapDemo {
+
+	public static void main(String[] args) {
+		/**
+		 * initialCapacity   初始容量大小，使用无参构造方法时，此值默认是16
+		 * loadFactor        加载因子，使用无参构造方法时，此值默认是 0.75f
+		 * accessOrder       false： 基于插入顺序     true：  基于访问顺序 
+		 */
+		LinkedHashMap<String, String> map = new LinkedHashMap<>(10, 0.75f, true);
+		
+		map.put("1", "a");
+		map.put("2", "b");
+		map.put("3", "c");
+		map.put("4", "d");
+		map.put("5", "e");
+		map.put("6", "f");
+		map.put("7", "g");
+		map.put("8", "h");
+		map.put("9", "i");
+		map.put("10", "j");
+		
+		showData(map);
+	}
+
+	private static void showData(LinkedHashMap<String, String> map) {
+		Iterator<String> iterator = map.keySet().iterator();
+	}
+
+}
