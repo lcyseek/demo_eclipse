@@ -1,1 +1,1 @@
-[[{"location":"/Library/Java/JavaVirtualMachines/jdk1.8.0_77.jdk/Contents/Home","type":"JRE","hints":{"EXECUTION_ENVIRONMENT":"JavaSE-1.7"}},"jre:jre:1.7.0"]]
+[[{"location":"/Users/luchunyang/DemoSpace/demo_eclipse/EventBus/libs/EventBus-2.4.0.jar","type":"JAR","hints":{}},"ABSENT"],[{"location":"/Users/luchunyang/Develop/android-sdk-macosx/platforms/android-19/android.jar","type":"JAR","hints":{}},"com.google.android:android:4.4.0"],[{"location":"/Users/luchunyang/DemoSpace/demo_eclipse/EventBus","type":"PROJECT","hints":{"PROJECT_NAME":"EventBus"}},"ABSENT"]]

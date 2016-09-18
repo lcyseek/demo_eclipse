@@ -1,0 +1,50 @@
+package com.example.eventbus;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.Toast;
+import de.greenrobot.event.EventBus;
+
+public class MainActivity extends Activity {
+
+	private Button btn;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		btn = (Button) findViewById(R.id.btn);
+		btn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						EventBus.getDefault().post(new Object());
+					}
+				}).start();
+			}
+		});
+		
+		EventBus.getDefault().register(this);
+	}
+
+
+	public void onEventMainThread(String msg) {
+		//Toast.makeText(this, msg+ Thread.currentThread().getName(), Toast.LENGTH_LONG).show();
+	}
+	
+	public void onEvent(Object msg) {
+		System.out.println(Thread.currentThread().getName()+"---->"+msg);
+	}
+
+}

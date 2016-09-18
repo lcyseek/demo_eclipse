@@ -2,6 +2,7 @@ package com.seek.map;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * 有序!!!!
@@ -17,8 +18,8 @@ public class LinkedHashMapDemo {
 		 * 					加载因子是哈希表在其容量自动增加之前可以达到多满的一种尺度，它衡量的是一个散列表的空间的使用程度，负载因子越大表示散列表的装填程度越高，反之愈小。对于使用链表法的散列表来说，查找一个元素的平均时间是O(1+a)，因此如果负载因子越大，对空间的利用更充分，然而后果是查找效率的降低；如果负载因子太小，那么散列表的数据将过于稀疏，对空间造成严重浪费。系统默认负载因子为0.75
 		 * accessOrder       false： 基于插入顺序     true：  基于访问顺序 
 		 */
-		LinkedHashMap<String, String> map = new LinkedHashMap<>(16, 0.75f, true);
-		
+		LinkedHashMap<String, String> map = new LinkedHashMap<>(10, 0.75f, true);
+
 		map.put("1", "a");
 		map.put("2", "b");
 		map.put("3", "c");
@@ -29,6 +30,7 @@ public class LinkedHashMapDemo {
 		map.put("8", "h");
 		map.put("9", "i");
 		map.put("10", "j");
+		map.put("11", "z");
 		
 		//get一个元素后，这个元素被加到最后(使用了LRU 最近最少被使用的调度算法)
 		map.get("3");
@@ -47,18 +49,18 @@ public class LinkedHashMapDemo {
 //		}
 		
 		
-//		Iterator<Map.Entry<String, String>> iterator = map.entrySet().iterator();
-//		while (iterator.hasNext()) {
-//			Map.Entry<java.lang.String, java.lang.String> entry = (Map.Entry<java.lang.String, java.lang.String>) iterator
-//					.next();
-//			System.out.println(entry.getKey()+"="+entry.getValue());
-//			
-//		}
+		Iterator<Map.Entry<String, String>> iterator = map.entrySet().iterator();
+		while (iterator.hasNext()) {
+			Map.Entry<java.lang.String, java.lang.String> entry = (Map.Entry<java.lang.String, java.lang.String>) iterator
+					.next();
+			System.out.println(entry.getKey()+"="+entry.getValue());
+			
+		}
 		
-	      for (Iterator<String> iterator = map.values().iterator(); iterator.hasNext();) {
-	    		  String name = (String) iterator.next();
-	    		  System.out.print(name);
-	      }
+//	      for (Iterator<String> iterator = map.values().iterator(); iterator.hasNext();) {
+//	    		  String name = (String) iterator.next();
+//	    		  System.out.print(name);
+//	      }
 		
 	}
 

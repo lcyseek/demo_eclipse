@@ -1,0 +1,10 @@
+package com.example.eventbus;
+
+import de.greenrobot.event.EventBus;
+
+public class Student {
+
+	public Student() {
+		EventBus.getDefault().register(this);
+	}
+}
