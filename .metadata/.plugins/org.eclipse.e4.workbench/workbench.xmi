@@ -244,7 +244,7 @@
       <tags>categoryTag:General</tags>
     </sharedElements>
     <sharedElements xsi:type="basic:Part" xmi:id="_8foQxHXVEeakQbdfOyQMTw" elementId="org.eclipse.ui.views.ProblemView" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityView" label="Problems" iconURI="platform:/plugin/org.eclipse.ui.ide/icons/full/eview16/problems_view.png" tooltip="" closeable="true">
-      <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;view PRIMARY_SORT_FIELD=&quot;org.eclipse.ui.ide.severityAndDescriptionField&quot; categoryGroup=&quot;org.eclipse.ui.ide.severity&quot; markerContentGenerator=&quot;org.eclipse.ui.ide.problemsGenerator&quot; partName=&quot;Problems&quot;>&#xA;&lt;expanded>&#xA;&lt;category IMemento.internal.id=&quot;Warnings (54 items)&quot;/>&#xA;&lt;/expanded>&#xA;&lt;columnWidths org.eclipse.ui.ide.locationField=&quot;90&quot; org.eclipse.ui.ide.markerType=&quot;90&quot; org.eclipse.ui.ide.pathField=&quot;120&quot; org.eclipse.ui.ide.resourceField=&quot;90&quot; org.eclipse.ui.ide.severityAndDescriptionField=&quot;300&quot;/>&#xA;&lt;visible IMemento.internal.id=&quot;org.eclipse.ui.ide.severityAndDescriptionField&quot;/>&#xA;&lt;visible IMemento.internal.id=&quot;org.eclipse.ui.ide.resourceField&quot;/>&#xA;&lt;visible IMemento.internal.id=&quot;org.eclipse.ui.ide.pathField&quot;/>&#xA;&lt;visible IMemento.internal.id=&quot;org.eclipse.ui.ide.locationField&quot;/>&#xA;&lt;visible IMemento.internal.id=&quot;org.eclipse.ui.ide.markerType&quot;/>&#xA;&lt;/view>"/>
+      <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;view PRIMARY_SORT_FIELD=&quot;org.eclipse.ui.ide.severityAndDescriptionField&quot; categoryGroup=&quot;org.eclipse.ui.ide.severity&quot; markerContentGenerator=&quot;org.eclipse.ui.ide.problemsGenerator&quot; partName=&quot;Problems&quot;>&#xA;&lt;expanded>&#xA;&lt;category IMemento.internal.id=&quot;Warnings (63 items)&quot;/>&#xA;&lt;/expanded>&#xA;&lt;columnWidths org.eclipse.ui.ide.locationField=&quot;90&quot; org.eclipse.ui.ide.markerType=&quot;90&quot; org.eclipse.ui.ide.pathField=&quot;120&quot; org.eclipse.ui.ide.resourceField=&quot;90&quot; org.eclipse.ui.ide.severityAndDescriptionField=&quot;300&quot;/>&#xA;&lt;visible IMemento.internal.id=&quot;org.eclipse.ui.ide.severityAndDescriptionField&quot;/>&#xA;&lt;visible IMemento.internal.id=&quot;org.eclipse.ui.ide.resourceField&quot;/>&#xA;&lt;visible IMemento.internal.id=&quot;org.eclipse.ui.ide.pathField&quot;/>&#xA;&lt;visible IMemento.internal.id=&quot;org.eclipse.ui.ide.locationField&quot;/>&#xA;&lt;visible IMemento.internal.id=&quot;org.eclipse.ui.ide.markerType&quot;/>&#xA;&lt;/view>"/>
       <tags>View</tags>
       <tags>categoryTag:General</tags>
       <menus xmi:id="_8foQxXXVEeakQbdfOyQMTw" elementId="org.eclipse.ui.views.ProblemView">
@@ -401,7 +401,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_8foQ33XVEeakQbdfOyQMTw" elementId="org.eclipse.ui.workbench.file">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_jD0HoH1-EeaJnrgh7L4kMw" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" command="_8ftJf3XVEeakQbdfOyQMTw"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_2ANEYH7XEeaTh-WDgfmeHQ" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" command="_8ftJf3XVEeakQbdfOyQMTw"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_8foQ7XXVEeakQbdfOyQMTw" elementId="additions" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -434,7 +434,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_8foROXXVEeakQbdfOyQMTw" elementId="org.eclipse.ui.workbench.navigate">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_jD4ZEH1-EeaJnrgh7L4kMw" elementId="org.eclipse.ui.window.pinEditor" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_8fskA3XVEeakQbdfOyQMTw"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_2AR84H7XEeaTh-WDgfmeHQ" elementId="org.eclipse.ui.window.pinEditor" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_8fskA3XVEeakQbdfOyQMTw"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_8foRRXXVEeakQbdfOyQMTw" elementId="group.editor" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -933,7 +933,7 @@
     <bindings xmi:id="__gbaYX1LEeaMFet7pL1d9A" keySequence="ALT+SHIFT+A D" command="_8fsj1HXVEeakQbdfOyQMTw"/>
     <bindings xmi:id="__gbaYn1LEeaMFet7pL1d9A" keySequence="ALT+SHIFT+A R" command="_8fr8F3XVEeakQbdfOyQMTw"/>
     <bindings xmi:id="__gcBcX1LEeaMFet7pL1d9A" keySequence="ALT+COMMAND+X G" command="_8ftwb3XVEeakQbdfOyQMTw"/>
-    <bindings xmi:id="_irnDAX1-EeaJnrgh7L4kMw" keySequence="COMMAND+CTRL+F" command="_8ftw0XXVEeakQbdfOyQMTw"/>
+    <bindings xmi:id="_1hK_AH7XEeaTh-WDgfmeHQ" keySequence="COMMAND+CTRL+F" command="_8ftw0XXVEeakQbdfOyQMTw"/>
   </bindingTables>
   <bindingTables xmi:id="_8fo4aHXVEeakQbdfOyQMTw" elementId="org.eclipse.cdt.ui.macroExpansionHoverScope" bindingContext="_8fpfRXXVEeakQbdfOyQMTw">
     <bindings xmi:id="__flF0X1LEeaMFet7pL1d9A" keySequence="ALT+ARROW_RIGHT" command="_8fsj-HXVEeakQbdfOyQMTw"/>
@@ -1149,7 +1149,7 @@
     <bindings xmi:id="_8fo49HXVEeakQbdfOyQMTw" keySequence="CTRL+D" command="_8ftwi3XVEeakQbdfOyQMTw"/>
   </bindingTables>
   <bindingTables xmi:id="_8fpe4HXVEeakQbdfOyQMTw" contributorURI="platform:/fragment/org.eclipse.e4.ui.workbench.renderers.swt.cocoa" bindingContext="_8fpfRHXVEeakQbdfOyQMTw">
-    <bindings xmi:id="_irnqEH1-EeaJnrgh7L4kMw" keySequence="M1+W" command="_8ftw03XVEeakQbdfOyQMTw"/>
+    <bindings xmi:id="_1hLmEH7XEeaTh-WDgfmeHQ" keySequence="M1+W" command="_8ftw03XVEeakQbdfOyQMTw"/>
   </bindingTables>
   <bindingTables xmi:id="_8fpe4nXVEeakQbdfOyQMTw" bindingContext="_8fpfS3XVEeakQbdfOyQMTw"/>
   <bindingTables xmi:id="_8fpe43XVEeakQbdfOyQMTw" bindingContext="_8fpfTHXVEeakQbdfOyQMTw"/>
